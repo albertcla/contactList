@@ -1,0 +1,20 @@
+<section class="detail">
+  <div class="col">
+    <a href="/">Volver a Contactos</a>
+    <div><img src="{{selectedUser.photo}}" alt="User_Photo"></div>
+    <h2>Datos personales</h2>
+    <p>Nombre: {{selectedUser.name}}</p>
+    <p>Teléfono: {{selectedUser.phone}}</p>
+    <p>Email: {{selectedUser.email}}</p>
+  </div>
+
+  <div class="col gifs">
+    <h2>Gifs Favoritos</h2>
+    <img src="{{favouriteG.gif}}" alt="Favorite_Gif" ng-repeat="favouriteG in selectedUser.gifs track by favouriteG.id">
+  </div>
+
+  <div class="col comics">
+    <h2>Comics Favoritos</h2>
+    <a href="/comic/{{favouriteC.id}}" ng-repeat="favouriteC in selectedUser.comics track by favouriteC.id"><img src="{{favouriteC.comic}}" alt="Favorite_Comic"></a>
+  </div>
+</section>

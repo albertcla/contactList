@@ -1,0 +1,102 @@
+<main>
+  <div class="abstract" ng-repeat="user in users track by user.id">
+    <div class="pers">
+      <img src="{{user.photo}}" alt="Foto-perfil">
+      <div class="info">
+        <h2>{{user.name}}</h2>
+      </div>
+    </div>
+    <div class="contact-info">
+      <p><b>Tlf: </b>{{user.phone}}</p>
+      <p><b>eMail: </b>{{user.email}}</p>
+    </div>
+    <div class="icons">
+      <a href="/profile/{{user.id}}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+      <a href="#" ng-click="editUser(user)"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+      <a href="#" ng-click="deleteUser(user)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</main>
+
+<aside>
+  <div class="menu">
+    <!--    <button>Nuevo</button>-->
+    <button ng-click="datosActive()">Datos</button>
+    <button ng-click="gifsActive()">Gifs</button>
+    <button ng-click="comicsActive()">Comics</button>
+  </div>
+  <form name="userForm" ng-show="actived == 'datos'" novalidate>
+    <div>
+      <label>Nombre:</label>
+      <input name="name" type="text" ng-model="newUser.name" ng-required="true">
+      <span class="pass"><i class="fa fa-check-circle" ng-if="userForm.name.$valid"></i></span>
+      <span class="fail error-msg"><i class="fa fa-exclamation-circle" ng-if="userForm.name.$touched && userForm.name.$invalid"></i></span>
+      <p class="error-msg" ng-show="userForm.name.$touched && userForm.name.$invalid">No podemos registrarte si no introduces tu Nombre.</p>
+    </div>
+
+    <div>
+      <label>Email:</label>
+      <input name="email" type="email" ng-model="newUser.email" ng-required="true" ng-minlength="8">
+      <span class="pass"><i class="fa fa-check-circle" ng-if="userForm.email.$valid"></i></span>
+      <span class="fail"><i class="fa fa-exclamation-circle" ng-if="userForm.email.$touched && userForm.email.$invalid"></i></span>
+      <p class="error-msg" ng-show="userForm.email.$touched && userForm.email.$invalid">El correo electrónico introducido no es correcto.</p>
+    </div>
+    <div>
+      <label>Teléfono:</label>
+      <input name="phone" type="tel" ng-model="newUser.phone" ng-required="true" ng-minlength="9" ng-pattern="/^[6|7|8|9][0-9]{8}$/">
+      <span class="pass"><i class="fa fa-check-circle" ng-if="userForm.phone.$valid"></i></span>
+      <span class="fail"><i class="fa fa-exclamation-circle" ng-if="userForm.phone.$touched && userForm.phone.$invalid"></i></span>
+      <p class="error-msg" ng-show="userForm.phone.$touched && userForm.phone.$invalid">El número de teléfono debe tener al menos 9 dígitos.</p>
+    </div>
+    <div>
+      <label>URL Foto:</label>
+      <input name="photo" type="url" ng-model="newUser.photo" ng-required="true">
+      <span class="pass"><i class="fa fa-check-circle" ng-if="userForm.photo.$valid"></i></span>
+      <span class="fail"><i class="fa fa-exclamation-circle" ng-if="userForm.photo.$touched && userForm.photo.$invalid"></i></span>
+      <p class="error-msg" ng-show="userForm.photo.$touched && userForm.photo.$invalid && newUser.photo == undefined">Debes introducir la URL de tu foto para poder registrarte</p>
+      <p class="error-msg" ng-show="userForm.photo.$touched && userForm.photo.$invalid && userForm.photo != undefined">La URL de la foto introducida no es correcta</p>
+    </div>
+  </form>
+  <section class="gifs" ng-show="actived == 'gifs'">
+    <p>Gifs Favoritos:</p>
+    <div>
+      <a href="#" ng-click="removeWish(favouriteG, newUser.gifs)" ng-repeat="favouriteG in newUser.gifs track by favouriteG.id"><img src="{{favouriteG.gif}}" alt="Favorite_Gif"></a>
+    </div>
+    <div>
+      <input type="text" placeholder="Buscar gif..." ng-model="searchGif">
+      <a href="#" ng-click="setOrder('relevant')" ng-class="{match: order == 'relevant'}">trending</a> | <a href="#" ng-click="setOrder('recent')" ng-class="{match: order == 'recent'}">recents</a>
+      <button ng-click="searchGifs(searchGif, offG, order)" ng-if="searchGif"><i class="fa fa-search" aria-hidden="true"></i></button>
+      <button ng-click="searchRandomGifs()" ng-if="!searchGif"><i class="fa fa-random" aria-hidden="true"></i></button>
+    </div>
+    <div class="results">
+      <a href="#" ng-click="prevGifs(searchGif, offG)" ng-show="offG != 0"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+      <div>
+        <a href="#" ng-click="setWish(resultG, newUser.gifs)" ng-repeat="resultG in resultsG track by resultG.id"><img src="{{resultG.gif}}" alt="Result_Gif" ng-class="{check: resultG.check}"></a>
+      </div>
+      <a href="#" ng-click="nextGifs(searchGif, offG)" ng-show="searchGif"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+    </div>
+  </section>
+
+  <section class="comics" ng-show="actived == 'comics'">
+    <p>Comics de Marvel Favoritos:</p>
+    <div>
+      <a href="#" ng-click="removeWish(favouriteC, newUser.comics)" ng-repeat="favouriteC in newUser.comics track by favouriteC.id"><img src="{{favouriteC.comic}}" alt="Favorite_Comic"></a>
+    </div>
+    <div>
+      <input type="text" placeholder="Buscar comic de Marvel..." ng-model="searchComic">
+      <button ng-click="searchComics(searchComic, offC)"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </div>
+    <div class="results">
+      <a href="#" ng-click="prevComics(searchComic, offC)"  ng-show="offC != 0"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+      <div>
+        <a href="#" ng-click="setWish(resultC, newUser.comics)" ng-repeat="resultC in resultsC track by resultC.id"><img src="{{resultC.comic}}" alt="Favorite_Marvel" ng-class="{check: resultC.check}"></a>
+      </div>
+      <a href="#" ng-click="nextComics(searchComic, offC)"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+    </div>
+  </section>
+  <div class="menu">
+    <button ng-click="cancelUser()" class="danger">Cancelar</button>
+    <button ng-if="!editing" ng-click="addUser(newUser)" ng-disabled="userForm.$invalid" class="success">Crear</button>
+    <button ng-if="editing" ng-click="saveUser(newUser)" class="success">Modificar</button>
+  </div>
+</aside>

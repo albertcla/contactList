@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ContactList">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact List</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="font/font-awesome-4.7.0/css/font-awesome.min.css">
+  <base href="/">
+</head>
+<body>
+
+  <div ng-view></div>
+
+<!--  Dependencias-->
+  <script src="libs/angular.min.js"></script>
+  <script src="libs/angular-route.min.js"></script>
+<!--  App-->
+  <script src="js/app.js"></script>
+<!--  Factories-->
+  <script src="js/factories/id.factory.js"></script>
+  <script src="js/factories/users.factory.js"></script>
+  <script src="js/factories/gifs.factory.js"></script>
+  <script src="js/factories/comics.factory.js"></script>
+<!--  Controllers-->
+  <script src="js/controllers/home.controller.js"></script>
+  <script src="js/controllers/profile.controller.js"></script>
+  <script src="js/controllers/comic.controller.js"></script>
+
+
+</body>
+</html>
